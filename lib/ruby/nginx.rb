@@ -1,34 +1,26 @@
 # frozen_string_literal: true
 
 require_relative "nginx/configuration"
-require_relative "nginx/utils/hosts"
-require_relative "nginx/utils/nginx"
+require_relative "nginx/exceptions"
+require_relative "nginx/system/hosts"
+require_relative "nginx/system/nginx"
 require_relative "nginx/version"
 
 module Ruby
   module Nginx
-    CONFIG_DIRECTORY_PATH = "$HOME/.ruby-nginx/servers"
-
-    Error = Class.new(StandardError)
-    PackageManagerError = Class.new(Error)
-    InstallError = Class.new(Error)
-    SetupError = Class.new(Error)
-    CreateError = Class.new(Error)
-    ConfigError = Class.new(Error)
-    StartError = Class.new(Error)
-    StopError = Class.new(Error)
+    include Ruby::Nginx::Exceptions
 
     def self.add!(options = {}, &block)
       setup!
       conf = config(options, &block)
 
-      Utils::Nginx.add_server_config(conf.name, conf.generate!)
-      Utils::Nginx.validate_config!
-      Utils::Nginx.restart!
-      Utils::Hosts.add(conf.domain, conf.host)
+      System::Nginx.add_server_config(conf.name, conf.generate!)
+      System::Nginx.validate_config!
+      System::Nginx.restart!
+      System::Hosts.add(conf.domain, conf.host)
 
       conf
-    rescue Utils::Nginx::Error
+    rescue Ruby::Nginx::Error
       remove!
       raise
     end
@@ -36,9 +28,9 @@ module Ruby
     def self.remove!(options = {}, &block)
       conf = config(options, &block)
 
-      Utils::Nginx.remove_server_config(conf.name)
-      Utils::Nginx.restart!
-      Utils::Hosts.remove(conf.domain)
+      System::Nginx.remove_server_config(conf.name)
+      System::Nginx.restart!
+      System::Hosts.remove(conf.domain)
 
       conf
     end
@@ -46,10 +38,10 @@ module Ruby
     private
 
     def self.setup!
-      Utils::Nginx.install!
-      Utils::Nginx.setup!
-      Utils::Mkcert.install!
-      Utils::Mkcert.setup!
+      System::Nginx.install!
+      System::Nginx.setup!
+      System::Mkcert.install!
+      System::Mkcert.setup!
     end
     private_class_method :setup!
 

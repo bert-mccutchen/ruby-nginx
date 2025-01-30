@@ -4,7 +4,7 @@ require "fileutils"
 
 module Ruby
   module Nginx
-    module Utils
+    module System
       class SafeFile
         class << self
           def touch(file_path)
@@ -28,6 +28,12 @@ module Ruby
             File.write(safe_path, content)
 
             safe_path
+          end
+
+          def rm(file_path)
+            safe_path = safe_path(file_path)
+
+            FileUtils.rm_f(safe_path)
           end
 
           private

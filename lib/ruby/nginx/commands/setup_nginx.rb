@@ -1,12 +1,15 @@
 # frozen_string_literal: true
 
+require_relative "../constants"
 require_relative "terminal_command"
 
 module Ruby
   module Nginx
     module Commands
       class SetupNginx < TerminalCommand
-        INCLUDE_STATEMENT = "include #{CONFIG_DIRECTORY_PATH}/*;"
+        include Ruby::Nginx::Constants
+
+        INCLUDE_STATEMENT = "include #{SERVERS_PATH}/*;"
         EXTERNAL_INCLUDE_STATEMENTS = [
           "include /etc/nginx/sites-enabled/*;",
           "include servers/*;"

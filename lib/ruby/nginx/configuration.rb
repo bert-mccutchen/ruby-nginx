@@ -1,12 +1,15 @@
 # frozen_string_literal: true
 
 require "erb"
-require_relative "utils/mkcert"
-require_relative "utils/safe_file"
+require_relative "constants"
+require_relative "system/mkcert"
+require_relative "system/safe_file"
 
 module Ruby
   module Nginx
     class Configuration
+      include Ruby::Nginx::Constants
+
       attr_accessor :options
 
       def initialize(options = {})
@@ -57,11 +60,11 @@ module Ruby
       private
 
       def default_path(path)
-        "$HOME/.ruby-nginx/#{path}"
+        "#{CONFIG_PATH}/#{path}"
       end
 
       def realize_option_path!(option)
-        options[option] = Utils::SafeFile.touch(options[option])
+        options[option] = System::SafeFile.touch(options[option])
       end
 
       def validate!
@@ -75,8 +78,8 @@ module Ruby
       end
 
       def create_ssl_certs!
-        Utils::Mkcert.setup!
-        Utils::Mkcert.create!(
+        System::Mkcert.setup!
+        System::Mkcert.create!(
           options[:domain],
           realize_option_path!(:ssl_certificate_path),
           realize_option_path!(:ssl_certificate_key_path)

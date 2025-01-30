@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
-require_relative "commands/install_nginx"
-require_relative "commands/setup_nginx"
-require_relative "commands/add_nginx_config"
-require_relative "commands/remove_nginx_config"
-require_relative "commands/validate_nginx_config"
-require_relative "commands/start_nginx"
-require_relative "commands/stop_nginx"
+require_relative "../commands/install_nginx"
+require_relative "../commands/setup_nginx"
+require_relative "../commands/add_nginx_config"
+require_relative "../commands/remove_nginx_config"
+require_relative "../commands/validate_nginx_config"
+require_relative "../commands/start_nginx"
+require_relative "../commands/stop_nginx"
 
 module Ruby
   module Nginx
-    module Utils
+    module System
       class Nginx
         class << self
           def install!

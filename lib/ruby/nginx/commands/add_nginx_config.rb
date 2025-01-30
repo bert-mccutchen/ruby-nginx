@@ -1,13 +1,16 @@
 # frozen_string_literal: true
 
-require_relative "../utils/safe_file"
+require_relative "../constants"
+require_relative "../system/safe_file"
 
 module Ruby
   module Nginx
     module Commands
       class AddNginxConfig
+        include Ruby::Nginx::Constants
+
         def run(name, config)
-          SafeFile.write("#{CONFIG_DIRECTORY_PATH}/#{name}.conf", config)
+          SafeFile.write("#{SERVERS_PATH}/#{name}.conf", config)
         end
       end
     end

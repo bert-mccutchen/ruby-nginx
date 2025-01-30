@@ -5,7 +5,7 @@ require_relative "../commands/remove_host_mapping"
 
 module Ruby
   module Nginx
-    module Utils
+    module System
       class Hosts
         class << self
           def add(host, ip)

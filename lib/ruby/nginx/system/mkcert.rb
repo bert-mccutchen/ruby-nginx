@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require_relative "commands/install_mkcert"
-require_relative "commands/setup_mkcert"
-require_relative "commands/create_mkcert_certificate"
+require_relative "../commands/install_mkcert"
+require_relative "../commands/setup_mkcert"
+require_relative "../commands/create_mkcert_certificate"
 
 module Ruby
   module Nginx
-    module Utils
+    module System
       class Mkcert
         class << self
           def install!
