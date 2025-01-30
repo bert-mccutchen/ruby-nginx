@@ -14,7 +14,7 @@ module Ruby
           super
 
           # nginx -v outputs to stderr
-          Ruby::Nginx::Version.new(results.stderr.match(/\d+\.\d+\.?\d?/).to_s)
+          Ruby::Nginx::Version.new(result.stderr.match(/\d+\.\d+\.?\d?/).to_s)
         end
       end
     end

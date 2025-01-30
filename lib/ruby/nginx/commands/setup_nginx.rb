@@ -30,7 +30,7 @@ module Ruby
             "#{line[:indent]}#{line[:statement]}\n#{line[:indent]}#{INCLUDE_STATEMENT}\n"
           )
 
-          cmd = "echo \"#{config.sub("\"", "\\\"")}\" | sudo tee #{config_file_path}"
+          cmd = "echo \"#{config.gsub("\"", "\\\"")}\" | sudo tee #{config_file_path}"
           TerminalCommand.new(cmd:, raise: Ruby::Nginx::SetupError).run
         end
 
