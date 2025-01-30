@@ -16,6 +16,12 @@ module Ruby
             safe_path
           end
 
+          def read(file_path)
+            safe_path = safe_path(file_path)
+
+            File.read(safe_path)
+          end
+
           def write(file_path, content)
             safe_path = touch(file_path)
 

@@ -7,12 +7,18 @@ require_relative "utils/safe_file"
 module Ruby
   module Nginx
     class Configuration
-      DEFAULT_PATH = "~/.ruby-nginx"
-
       attr_accessor :options
 
       def initialize(options = {})
         @options = defaults.merge(options)
+      end
+
+      def domain
+        options[:domain]
+      end
+
+      def host
+        options[:host]
       end
 
       def name
@@ -51,7 +57,7 @@ module Ruby
       private
 
       def default_path(path)
-        "~/.ruby-nginx/#{path}"
+        "$HOME/.ruby-nginx/#{path}"
       end
 
       def realize_option_path!(option)

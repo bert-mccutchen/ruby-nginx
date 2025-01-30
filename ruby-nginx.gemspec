@@ -28,6 +28,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "erb"
   spec.add_dependency "open3"
   spec.add_dependency "thor"
+  spec.add_dependency "tty-command"
 
   # For more information and examples about making a new gem, checkout our
   # guide at: https://bundler.io/guides/creating_gem.html

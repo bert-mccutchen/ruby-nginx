@@ -1,60 +1,49 @@
 # frozen_string_literal: true
 
-require "open3"
-require_relative "command"
-require_relative "safe_file"
+require_relative "commands/install_nginx"
+require_relative "commands/setup_nginx"
+require_relative "commands/add_nginx_config"
+require_relative "commands/remove_nginx_config"
+require_relative "commands/validate_nginx_config"
+require_relative "commands/start_nginx"
+require_relative "commands/stop_nginx"
 
 module Ruby
   module Nginx
     module Utils
       class Nginx
-        class Error < StandardError; end
-
-        class InstallError < Error; end
-
-        class ConfigError < Error; end
-
-        class StartError < Error; end
-
-        class StopError < Error; end
-
         class << self
+          def install!
+            Commands::InstallNginx.new.run
+          end
+
+          def setup!
+            Commands::SetupNginx.new.run
+          end
+
           def add_server_config(name, config)
-            SafeFile.write(server_config_path(name), config)
+            Commands::AddNginxConfig.new.run(name, config)
           end
 
           def remove_server_config(name)
-            FileUtils.rm_f(server_config_path(name))
+            Commands::RemoveNginxConfig.new.run(name)
           end
 
           def validate_config!
-            Command.new(raise: ConfigError).run("nginx -t")
+            Commands::ValidateNginxConfig.new.run
           end
 
           def start!
-            Command.new(raise: StartError).run("nginx")
+            Commands::StartNginx.new.run
           end
 
           def stop!
-            Command.new(raise: StopError).run("nginx -s stop")
-          rescue StopError => e
-            raise unless e.message.include?("invalid PID number")
+            Commands::StopNginx.new.run
           end
 
           def restart!
             stop!
             start!
-          end
-
-          private
-
-          def config_file_path
-            result = Command.new(raise: Error).run("nginx -V")
-            result.stderr.split.find { |s| s.include?("--conf-path=") }.delete_prefix("--conf-path=")
-          end
-
-          def server_config_path(name)
-            "#{File.dirname(config_file_path)}/servers/#{name}.conf"
           end
         end
       end
