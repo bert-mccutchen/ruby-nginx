@@ -3,7 +3,7 @@
 module Ruby
   module Nginx
     module Constants
-      CONFIG_PATH = "$HOME/.ruby-nginx"
+      CONFIG_PATH = "~/.ruby-nginx"
       SERVERS_PATH = "#{CONFIG_PATH}/servers"
     end
   end

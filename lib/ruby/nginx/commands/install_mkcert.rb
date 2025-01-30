@@ -27,7 +27,7 @@ module Ruby
         private
 
         def installed?
-          TTY::Command.new.run("which mkcert").success?
+          TTY::Command.new(printer: :null).run!("which mkcert").success?
         end
 
         def brew_command
@@ -36,16 +36,16 @@ module Ruby
 
         def yum_command
           "sudo yum install -y nss-tools && " \
-          "curl -JLO \"https://dl.filippo.io/mkcert/latest?for=linux/amd64\" && " \
-          "chmod +x mkcert-v*-linux-amd64 && " \
-          "sudo cp mkcert-v*-linux-amd64 /usr/local/bin/mkcert"
+          "curl -L -C - \"https://dl.filippo.io/mkcert/latest?for=linux/amd64\" -o ./mkcert_download && " \
+          "chmod +x ./mkcert_download && " \
+          "sudo mv ./mkcert_download /usr/local/bin/mkcert"
         end
 
         def apt_get_command
           "sudo apt-get install -y libnss3-tools && " \
-          "curl -JLO \"https://dl.filippo.io/mkcert/latest?for=linux/amd64\" && " \
-          "chmod +x mkcert-v*-linux-amd64 && " \
-          "sudo cp mkcert-v*-linux-amd64 /usr/local/bin/mkcert"
+          "curl -L -C - \"https://dl.filippo.io/mkcert/latest?for=linux/amd64\" -o ./mkcert_download && " \
+          "chmod +x ./mkcert_download && " \
+          "sudo mv ./mkcert_download /usr/local/bin/mkcert"
         end
       end
     end

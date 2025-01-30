@@ -17,7 +17,7 @@ module Ruby
         end
 
         def run
-          @result = TTY::Command.new.run(cmd, user: user)
+          @result = TTY::Command.new(printer: :null).run!(cmd, user: user)
           raise @error_type, @result.err if error_type && @result.failure?
 
           @result
@@ -30,9 +30,9 @@ module Ruby
         end
 
         def package_manager
-          return :brew if PackageManager.instance.brew?
-          return :apt_get if PackageManager.instance.apt_get?
-          return :yum if PackageManager.instance.yum?
+          return :brew if Ruby::Nginx::System::PackageManager.instance.brew?
+          return :apt_get if Ruby::Nginx::System::PackageManager.instance.apt_get?
+          return :yum if Ruby::Nginx::System::PackageManager.instance.yum?
 
           raise Ruby::Nginx::Error, "Could not determine package manager"
         end

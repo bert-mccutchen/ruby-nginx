@@ -13,6 +13,10 @@ module Ruby
     module System
       class Nginx
         class << self
+          def version
+            Commands::NginxVersion.new.run
+          end
+
           def install!
             Commands::InstallNginx.new.run
           end

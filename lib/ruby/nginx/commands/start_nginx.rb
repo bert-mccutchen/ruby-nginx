@@ -7,7 +7,7 @@ module Ruby
     module Commands
       class StartNginx < TerminalCommand
         def initialize
-          super(cmd: "nginx", raise: Ruby::Nginx::StartError)
+          super(cmd: "sudo nginx", raise: Ruby::Nginx::StartError)
         end
       end
     end

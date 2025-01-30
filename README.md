@@ -39,10 +39,10 @@ Ruby::Nginx.add!(
   host: "localhost",
 
   # default: included template
-  template_path: "$HOME/projects/example-app/nginx.conf.erb",
+  template_path: "~/projects/example-app/nginx.conf.erb",
 
   # default: $PWD
-  root_path: "$HOME/projects/example-app/public",
+  root_path: "~/projects/example-app/public",
 
   # default: false
   ssl: true,
@@ -51,16 +51,16 @@ Ruby::Nginx.add!(
   log: true,
 
   # default: ~/.ruby-nginx/certs/_[DOMAIN].pem
-  ssl_certificate_path: "$HOME/projects/example-app/tmp/nginx/_example.test.pem",
+  ssl_certificate_path: "~/projects/example-app/tmp/nginx/_example.test.pem",
 
   # default: ~/.ruby-nginx/certs/_[DOMAIN]-key.pem
-  ssl_certificate_key_path: "$HOME/projects/example-app/tmp/nginx/_example.test-key.pem",
+  ssl_certificate_key_path: "~/projects/example-app/tmp/nginx/_example.test-key.pem",
 
   # default: ~/.ruby-nginx/logs/[DOMAIN].access.log
-  access_log_path: "$HOME/projects/example-app/log/nginx/example.test.access.log",
+  access_log_path: "~/projects/example-app/log/nginx/example.test.access.log",
 
   # default: ~/.ruby-nginx/logs/[DOMAIN].error.log
-  error_log_path: "$HOME/projects/example-app/log/nginx/example.test.error.log"
+  error_log_path: "~/projects/example-app/log/nginx/example.test.error.log"
 )
 ```
 

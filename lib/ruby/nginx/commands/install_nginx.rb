@@ -27,7 +27,7 @@ module Ruby
         private
 
         def installed?
-          TTY::Command.new.run("which nginx").success?
+          TTY::Command.new(printer: :null).run!("which nginx").success?
         end
 
         def brew_command

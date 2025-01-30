@@ -7,7 +7,7 @@ module Ruby
     module Commands
       class StopNginx < TerminalCommand
         def initialize
-          super(cmd: "nginx -s stop", raise: Ruby::Nginx::StopError)
+          super(cmd: "sudo nginx -s stop", raise: Ruby::Nginx::StopError)
         end
 
         def run

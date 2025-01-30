@@ -29,7 +29,7 @@ module Ruby
 
         def package_with?(package_manager)
           @semaphore.synchronize do
-            TTY::Command.new.run("which #{package_manager}").success?
+            TTY::Command.new(printer: :null).run!("which #{package_manager}").success?
           end
         end
       end

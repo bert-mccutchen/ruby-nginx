@@ -10,7 +10,7 @@ module Ruby
         include Ruby::Nginx::Constants
 
         def run(name, config)
-          SafeFile.write("#{SERVERS_PATH}/#{name}.conf", config)
+          Ruby::Nginx::System::SafeFile.write("#{SERVERS_PATH}/#{name}.conf", config)
         end
       end
     end

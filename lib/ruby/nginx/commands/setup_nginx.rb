@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "../constants"
+require_relative "../system/safe_file"
 require_relative "terminal_command"
 
 module Ruby
@@ -11,8 +12,8 @@ module Ruby
 
         INCLUDE_STATEMENT = "include #{SERVERS_PATH}/*;"
         EXTERNAL_INCLUDE_STATEMENTS = [
-          "include /etc/nginx/sites-enabled/*;",
-          "include servers/*;"
+          "include /etc/nginx/sites-enabled/\\*;",
+          "include servers/\\*;"
         ]
 
         def initialize
@@ -29,7 +30,8 @@ module Ruby
             "#{line[:indent]}#{line[:statement]}\n#{line[:indent]}#{INCLUDE_STATEMENT}\n"
           )
 
-          SafeFile.write(config_file_path, config)
+          cmd = "echo \"#{config.sub("\"", "\\\"")}\" | sudo tee #{config_file_path}"
+          TerminalCommand.new(cmd:, raise: Ruby::Nginx::SetupError).run
         end
 
         private
@@ -44,12 +46,12 @@ module Ruby
         end
 
         def config
-          @config ||= SafeFile.read(config_file_path)
+          @config ||= Ruby::Nginx::System::SafeFile.read(config_file_path)
         end
 
         def external_include_statement
           EXTERNAL_INCLUDE_STATEMENTS.each do |statement|
-            match = config.match(/^(?<indent>\s*)(?<statement>#{statement})$/)
+            match = config.match(/(?<indent>\s*)(?<statement>#{statement})/)
             return match if match
           end
 

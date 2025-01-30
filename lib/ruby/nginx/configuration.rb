@@ -3,6 +3,7 @@
 require "erb"
 require_relative "constants"
 require_relative "system/mkcert"
+require_relative "system/nginx"
 require_relative "system/safe_file"
 
 module Ruby
@@ -55,6 +56,10 @@ module Ruby
           access_log_path: default_path("logs/#{options[:domain]}.access.log"),
           error_log_path: default_path("logs/#{options[:domain]}.error.log")
         }
+      end
+
+      def nginx_version
+        @nginx_version ||= System::Nginx.version
       end
 
       private

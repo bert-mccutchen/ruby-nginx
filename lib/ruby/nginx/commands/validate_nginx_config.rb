@@ -7,7 +7,7 @@ module Ruby
     module Commands
       class ValidateNginxConfig < TerminalCommand
         def initialize
-          super(cmd: "nginx -t", raise: Ruby::Nginx::ConfigError)
+          super(cmd: "sudo nginx -t", raise: Ruby::Nginx::ConfigError)
         end
       end
     end

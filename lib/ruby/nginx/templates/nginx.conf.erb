@@ -38,8 +38,12 @@ server {
 
   <% if options[:ssl] %>
   # ssl
+  <% if nginx_version >= Ruby::Nginx::Version.new("1.25.1") %>
   listen                      443 ssl;
   http2                       on;
+  <% else %>
+  listen                      443 ssl http2;
+  <% end %>
   ssl_certificate             <%= options[:ssl_certificate_path] %>;
   ssl_certificate_key         <%= options[:ssl_certificate_key_path] %>;
   <% end %>
