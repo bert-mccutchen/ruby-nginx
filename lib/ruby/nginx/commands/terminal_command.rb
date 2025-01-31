@@ -36,6 +36,10 @@ module Ruby
 
           raise Ruby::Nginx::Error, "Could not determine package manager"
         end
+
+        def sudoify(cmd, sudo)
+          sudo ? "sudo #{cmd}" : cmd
+        end
       end
     end
   end

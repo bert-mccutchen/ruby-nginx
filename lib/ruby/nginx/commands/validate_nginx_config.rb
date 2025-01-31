@@ -6,8 +6,20 @@ module Ruby
   module Nginx
     module Commands
       class ValidateNginxConfig < TerminalCommand
-        def initialize
-          super(cmd: "sudo nginx -t", raise: Ruby::Nginx::ConfigError)
+        def initialize(sudo: false)
+          @sudo = sudo
+          cmd = sudoify("nginx -t", sudo)
+
+          super(cmd:, raise: Ruby::Nginx::ConfigError)
+        end
+
+        def run
+          super
+        rescue Ruby::Nginx::ConfigError
+          raise if @sudo
+
+          # Elevate to sudo and try again.
+          self.class.new(sudo: true).run
         end
       end
     end

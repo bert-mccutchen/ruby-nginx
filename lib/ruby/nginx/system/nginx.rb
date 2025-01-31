@@ -2,6 +2,7 @@
 
 require_relative "../commands/add_nginx_config"
 require_relative "../commands/install_nginx"
+require_relative "../commands/nginx_options"
 require_relative "../commands/nginx_version"
 require_relative "../commands/remove_nginx_config"
 require_relative "../commands/setup_nginx"
@@ -16,6 +17,10 @@ module Ruby
         class << self
           def version
             Commands::NginxVersion.new.run
+          end
+
+          def options
+            Commands::NginxOptions.new.run
           end
 
           def install!

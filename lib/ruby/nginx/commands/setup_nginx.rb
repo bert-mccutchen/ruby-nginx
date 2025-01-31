@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "../constants"
+require_relative "../system/nginx"
 require_relative "../system/safe_file"
 require_relative "terminal_command"
 
@@ -10,28 +11,26 @@ module Ruby
       class SetupNginx < TerminalCommand
         include Ruby::Nginx::Constants
 
-        INCLUDE_STATEMENT = "include #{SERVERS_PATH}/*;"
+        INCLUDE_STATEMENT = "include #{File.expand_path(SERVERS_PATH)}/*;"
         EXTERNAL_INCLUDE_STATEMENTS = [
           "include /etc/nginx/sites-enabled/\\*;",
           "include servers/\\*;"
         ]
 
-        def initialize
-          super(cmd: "nginx -V", raise: Ruby::Nginx::SetupError)
+        def initialize(sudo: false)
+          @sudo = sudo
+          cmd = "echo \"#{new_config}\" | #{sudoify("tee #{config_file_path}", sudo)}"
+
+          super(cmd:, raise: Ruby::Nginx::SetupError)
         end
 
         def run
-          super
-          return if setup?
+          super unless setup?
+        rescue Ruby::Nginx::SetupError
+          raise if @sudo
 
-          line = external_include_statement
-          config.gsub!(
-            "#{line[:indent]}#{line[:statement]}",
-            "#{line[:indent]}#{line[:statement]}\n#{line[:indent]}#{INCLUDE_STATEMENT}\n"
-          )
-
-          cmd = "echo \"#{config.gsub("\"", "\\\"")}\" | sudo tee #{config_file_path}"
-          TerminalCommand.new(cmd:, raise: Ruby::Nginx::SetupError).run
+          # Elevate to sudo and try again.
+          self.class.new(sudo: true).run
         end
 
         private
@@ -41,8 +40,7 @@ module Ruby
         end
 
         def config_file_path
-          # nginx -V outputs to stderr
-          @config_file_path ||= result.stderr.split.find { |s| s.include?("--conf-path=") }.delete_prefix("--conf-path=")
+          @config_file_path ||= Ruby::Nginx::System::Nginx.options["--conf-path"]
         end
 
         def config
@@ -59,6 +57,16 @@ module Ruby
             "Could not find a suitable place to add the include statement.\n" \
             "Please add the following line to your nginx configuration file:\n" \
             "#{INCLUDE_STATEMENT}"
+        end
+
+        def new_config
+          match = external_include_statement
+          indent = match[:indent]
+          statement = match.to_s
+
+          config
+            .gsub(statement, "#{statement}\n#{indent}#{INCLUDE_STATEMENT}\n")
+            .gsub("\"", "\\\"")
         end
       end
     end

@@ -6,15 +6,23 @@ module Ruby
   module Nginx
     module Commands
       class StopNginx < TerminalCommand
-        def initialize
-          super(cmd: "sudo nginx -s stop", raise: Ruby::Nginx::StopError)
+        def initialize(sudo: false)
+          @sudo = sudo
+          cmd = sudoify("nginx -s stop", sudo)
+
+          super(cmd:, raise: Ruby::Nginx::StopError)
         end
 
         def run
           super
         rescue Ruby::Nginx::StopError => e
-          # Nginx is not running - ignore.
-          raise unless e.message.include?("invalid PID number")
+          if @sudo
+            # Nginx is not running - ignore.
+            raise unless e.message.include?("invalid PID number")
+          else
+            # Elevate to sudo and try again.
+            self.class.new(sudo: true).run
+          end
         end
       end
     end

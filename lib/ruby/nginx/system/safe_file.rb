@@ -17,7 +17,7 @@ module Ruby
           end
 
           def read(file_path)
-            safe_path = safe_path(file_path)
+            safe_path = File.expand_path(file_path)
 
             File.read(safe_path)
           end
@@ -31,15 +31,9 @@ module Ruby
           end
 
           def rm(file_path)
-            safe_path = safe_path(file_path)
+            safe_path = File.expand_path(file_path)
 
             FileUtils.rm_f(safe_path)
-          end
-
-          private
-
-          def safe_path(file_path)
-            File.expand_path(file_path)
           end
         end
       end

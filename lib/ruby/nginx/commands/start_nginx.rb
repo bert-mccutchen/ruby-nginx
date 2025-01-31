@@ -6,8 +6,20 @@ module Ruby
   module Nginx
     module Commands
       class StartNginx < TerminalCommand
-        def initialize
-          super(cmd: "sudo nginx", raise: Ruby::Nginx::StartError)
+        def initialize(sudo: false)
+          @sudo = sudo
+          cmd = sudoify("nginx", sudo)
+
+          super(cmd:, raise: Ruby::Nginx::StartError)
+        end
+
+        def run
+          super
+        rescue Ruby::Nginx::StartError
+          raise if @sudo
+
+          # Elevate to sudo and try again.
+          self.class.new(sudo: true).run
         end
       end
     end
