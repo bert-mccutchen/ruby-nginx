@@ -83,7 +83,6 @@ module Ruby
       end
 
       def create_ssl_certs!
-        System::Mkcert.setup!
         System::Mkcert.create!(
           options[:domain],
           realize_option_path!(:ssl_certificate_path),

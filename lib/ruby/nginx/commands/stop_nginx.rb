@@ -8,7 +8,8 @@ module Ruby
       class StopNginx < TerminalCommand
         def initialize(sudo: false)
           @sudo = sudo
-          cmd = sudoify("nginx -s stop", sudo)
+          sudo_reason = "Allow sudo elevation to stop nginx?"
+          cmd = sudoify("nginx -s stop", sudo, sudo_reason)
 
           super(cmd:, raise: Ruby::Nginx::StopError)
         end

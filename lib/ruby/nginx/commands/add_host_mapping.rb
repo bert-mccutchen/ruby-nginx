@@ -10,7 +10,8 @@ module Ruby
           @host = host
           @ip = ip
           @sudo = sudo
-          cmd = "echo \"#{ip} #{host}\" | #{sudoify("tee -a /etc/hosts", sudo)}"
+          sudo_reason = "Allow sudo elevation to add \"#{host}\" to /etc/hosts?"
+          cmd = "echo \"#{ip} #{host}\" | #{sudoify("tee -a /etc/hosts", sudo, sudo_reason)}"
 
           super(cmd:, raise: Ruby::Nginx::ConfigError)
         end

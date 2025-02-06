@@ -8,7 +8,8 @@ module Ruby
       class ValidateNginxConfig < TerminalCommand
         def initialize(sudo: false)
           @sudo = sudo
-          cmd = sudoify("nginx -t", sudo)
+          sudo_reason = "Allow sudo elevation to validate nginx config?"
+          cmd = sudoify("nginx -t", sudo, sudo_reason)
 
           super(cmd:, raise: Ruby::Nginx::ConfigError)
         end

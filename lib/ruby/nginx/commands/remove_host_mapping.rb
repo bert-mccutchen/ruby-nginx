@@ -9,6 +9,7 @@ module Ruby
         def initialize(host, sudo: false)
           @host = host
           @sudo = sudo
+          @sudo_reason = "Allow sudo elevation to remove \"#{host}\" from /etc/hosts?"
           cmd =
             if darwin?
               darwin_command
@@ -31,11 +32,11 @@ module Ruby
         private
 
         def darwin_command
-          sudoify("sed -i '' '/#{@host}/d' /etc/hosts", @sudo)
+          sudoify("sed -i '' '/#{@host}/d' /etc/hosts", @sudo, @sudo_reason)
         end
 
         def linux_command
-          sudoify("sed -i '/#{@host}/d' /etc/hosts", @sudo)
+          sudoify("sed -i '/#{@host}/d' /etc/hosts", @sudo, @sudo_reason)
         end
       end
     end

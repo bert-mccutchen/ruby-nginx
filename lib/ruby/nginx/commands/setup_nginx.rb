@@ -19,7 +19,8 @@ module Ruby
 
         def initialize(sudo: false)
           @sudo = sudo
-          cmd = "echo \"#{new_config}\" | #{sudoify("tee #{config_file_path}", sudo)}"
+          sudo_reason = "Allow sudo elevation to add \"#{INCLUDE_STATEMENT}\" to nginx configuration file?"
+          cmd = "echo \"#{new_config}\" | #{sudoify("tee #{config_file_path}", sudo, sudo_reason)}"
 
           super(cmd:, raise: Ruby::Nginx::SetupError)
         end

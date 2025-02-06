@@ -17,11 +17,17 @@ module Ruby
               yum_command
             end
 
-          super(cmd:, raise: Ruby::Nginx::InstallError)
+          super(cmd:, raise: Ruby::Nginx::InstallError, printer: :pretty)
         end
 
         def run
-          super unless installed?
+          return if installed?
+
+          if yes?("Would you like to install mkcert?")
+            super
+          else
+            raise Ruby::Nginx::AbortError, "mkcert is required to continue. Please install mkcert."
+          end
         end
 
         private

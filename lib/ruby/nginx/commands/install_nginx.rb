@@ -17,11 +17,17 @@ module Ruby
               yum_command
             end
 
-          super(cmd:, raise: Ruby::Nginx::InstallError)
+          super(cmd:, raise: Ruby::Nginx::InstallError, printer: :pretty)
         end
 
         def run
-          super unless installed?
+          return if installed?
+
+          if yes?("Would you like to install Nginx?")
+            super
+          else
+            raise Ruby::Nginx::AbortError, "Nginx is required to continue. Please install Nginx."
+          end
         end
 
         private

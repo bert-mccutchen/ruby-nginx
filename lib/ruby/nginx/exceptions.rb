@@ -4,6 +4,7 @@ module Ruby
   module Nginx
     module Exceptions
       Error = Class.new(StandardError)
+      AbortError = Class.new(Error)
       InstallError = Class.new(Error)
       SetupError = Class.new(Error)
       CreateError = Class.new(Error)

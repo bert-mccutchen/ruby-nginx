@@ -20,8 +20,10 @@ module Ruby
       System::Hosts.add(conf.domain, conf.host)
 
       conf
+    rescue Ruby::Nginx::AbortError
+      raise
     rescue Ruby::Nginx::Error
-      remove!
+      remove!(options)
       raise
     end
 
