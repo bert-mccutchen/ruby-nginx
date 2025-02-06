@@ -44,17 +44,16 @@ module Ruby
         }.compact
 
         Ruby::Nginx.add!(**config)
+      rescue Ruby::Nginx::Error => e
+        abort "[Ruby::Nginx] #{e.message}"
       end
 
       desc "remove", "Remove a NGINX server configuration"
       method_option :domain, aliases: "-d", type: :string, required: true, desc: "eg. example.test"
       def remove
         Ruby::Nginx.remove!(domain: options.domain)
-      end
-
-      desc "template", "Copy a NGINX server configuration template"
-      def template
-        copy_file File.expand_path("templates/nginx.conf.erb", __dir__), "nginx.conf.erb"
+      rescue Ruby::Nginx::Error => e
+        abort "[Ruby::Nginx] #{e.message}"
       end
     end
   end
