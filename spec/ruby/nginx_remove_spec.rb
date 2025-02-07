@@ -5,7 +5,7 @@ RSpec.describe Ruby::Nginx do
     Ruby::Nginx.remove!(domain: "example.test")
   end
 
-  it "removes the hosts mapping"  do
+  it "removes the hosts mapping" do
     hosts = File.read("/etc/hosts")
     expect(hosts).not_to include("example.test")
   end

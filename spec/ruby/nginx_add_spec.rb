@@ -11,7 +11,7 @@ RSpec.describe Ruby::Nginx do
     )
   end
 
-  it "adds the hosts mapping"  do
+  it "adds the hosts mapping" do
     hosts = File.read("/etc/hosts")
     expect(hosts).to include("example.test")
   end
