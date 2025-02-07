@@ -28,7 +28,7 @@ module Ruby
         protected
 
         def yes?(question)
-          TTY::Prompt.new.yes?("[Ruby::Nginx] #{question}")
+          ENV["SKIP_PROMPT"] || TTY::Prompt.new.yes?("[Ruby::Nginx] #{question}")
         end
 
         def darwin?

@@ -8,7 +8,7 @@ module Ruby
       class StartNginx < TerminalCommand
         def initialize(sudo: false)
           @sudo = sudo
-          sudo_reason = "Allow sudo elevation to start nginx?"
+          sudo_reason = "Allow sudo elevation to start NGINX?"
           cmd = sudoify("nginx", sudo, sudo_reason)
 
           super(cmd:, raise: Ruby::Nginx::StartError)

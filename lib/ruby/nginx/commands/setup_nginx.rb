@@ -19,7 +19,7 @@ module Ruby
 
         def initialize(sudo: false)
           @sudo = sudo
-          sudo_reason = "Allow sudo elevation to add \"#{INCLUDE_STATEMENT}\" to nginx configuration file?"
+          sudo_reason = "Allow sudo elevation to add \"#{INCLUDE_STATEMENT}\" to NGINX configuration file?"
           cmd = "echo \"#{new_config}\" | #{sudoify("tee #{config_file_path}", sudo, sudo_reason)}"
 
           super(cmd:, raise: Ruby::Nginx::SetupError)
@@ -56,7 +56,7 @@ module Ruby
 
           raise Ruby::Nginx::SetupError,
             "Could not find a suitable place to add the include statement.\n" \
-            "Please add the following line to your nginx configuration file:\n" \
+            "Please add the following line to your NGINX configuration file:\n" \
             "#{INCLUDE_STATEMENT}"
         end
 
