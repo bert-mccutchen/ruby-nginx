@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
+require "puma/configuration"
+
 RSpec.describe Ruby::Nginx do
-  before do
+  before(:all) do
     Ruby::Nginx.add!(
       domain: "example.test",
-      port: 3000,
-      root_path: "#{File.dirname(__FILE__)}/../dummy",
+      port: Puma::Configuration::DEFAULTS[:tcp_port],
+      root_path: RSpec.configuration.dummy_dir,
       ssl: true,
       log: true
     )
@@ -38,7 +40,7 @@ RSpec.describe Ruby::Nginx do
   end
 
   it "successfully builds up a NGINX site" do
-    html = `curl -s http://example.test/index.html`
+    html = `curl -s http://example.test`
     expect(html).to include("Hello, from Ruby NGINX!")
   end
 end

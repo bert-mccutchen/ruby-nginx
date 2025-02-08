@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "puma"
+require "puma/cli"
 require "ruby/nginx"
 
 ENV["SKIP_PROMPT"] = "true"
@@ -13,5 +15,20 @@ RSpec.configure do |config|
 
   config.expect_with :rspec do |c|
     c.syntax = :expect
+  end
+
+  config.add_setting :dummy_dir
+  config.dummy_dir = File.expand_path("./dummy", __dir__)
+
+  config.before(:suite) do
+    print "Starting Dummy Server"
+    $dummy_server = Thread.new do # standard:disable Style/GlobalVars
+      Puma::CLI.new(["-s", "--dir=#{RSpec.configuration.dummy_dir}"]).run
+    end
+  end
+
+  config.after(:suite) do
+    print "Stopping Dummy Server"
+    $dummy_server.exit if $dummy_server.alive? # standard:disable Style/GlobalVars
   end
 end

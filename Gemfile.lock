@@ -19,14 +19,18 @@ GEM
     json (2.9.1)
     language_server-protocol (3.17.0.4)
     lint_roller (1.1.0)
+    nio4r (2.7.4)
     open3 (0.2.1)
     parallel (1.26.3)
-    parser (3.3.7.0)
+    parser (3.3.7.1)
       ast (~> 2.4.1)
       racc
     pastel (0.8.0)
       tty-color (~> 0.5)
+    puma (6.6.0)
+      nio4r (~> 2.0)
     racc (1.8.1)
+    rack (3.1.9)
     rainbow (3.1.1)
     rake (13.2.1)
     regexp_parser (2.10.0)
@@ -34,7 +38,7 @@ GEM
       rspec-core (~> 3.13.0)
       rspec-expectations (~> 3.13.0)
       rspec-mocks (~> 3.13.0)
-    rspec-core (3.13.2)
+    rspec-core (3.13.3)
       rspec-support (~> 3.13.0)
     rspec-expectations (3.13.3)
       diff-lcs (>= 1.2.0, < 2.0)
@@ -98,10 +102,12 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  rake (~> 13.0)
-  rspec (~> 3.0)
+  puma
+  rack
+  rake
+  rspec
   ruby-nginx!
-  standard (~> 1.42)
+  standard
 
 BUNDLED WITH
    2.5.23

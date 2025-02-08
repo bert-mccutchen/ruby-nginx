@@ -16,7 +16,8 @@ RSpec.describe Ruby::Nginx do
   end
 
   it "successfully tears down a NGINX site" do
-    html = `curl -s http://example.test/index.html`
-    expect(html).to include("502 Bad Gateway")
+    html = `curl -s http://example.test`
+    sleep(1) # Sometimes the DNS takes a second to lose the host mapping.
+    expect(html).to eq("")
   end
 end
