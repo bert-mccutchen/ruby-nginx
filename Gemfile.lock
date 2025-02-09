@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ruby-nginx (1.0.0.pre.alpha)
+    ruby-nginx (1.0.0.pre.beta)
       erb
       open3
       thor
