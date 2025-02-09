@@ -1,3 +1,5 @@
+# Only test Ruby maintenance branches.
+# https://www.ruby-lang.org/en/downloads/branches
 name: Ruby
 on:
   push:
@@ -12,9 +14,10 @@ jobs:
     strategy:
       matrix:
         ruby:
-          - 3.1.6
-          - 3.2.6
-          - 3.3.6
+          - "3.1"
+          - "3.2"
+          - "3.3"
+          - "3.4"
     steps:
     - uses: actions/checkout@v4
     - name: Set up Ruby
@@ -29,9 +32,10 @@ jobs:
     strategy:
       matrix:
         ruby:
-          - 3.1.6
-          - 3.2.6
-          - 3.3.6
+          - "3.1"
+          - "3.2"
+          - "3.3"
+          - "3.4"
     steps:
     - uses: actions/checkout@v4
     - name: Set up Ruby
