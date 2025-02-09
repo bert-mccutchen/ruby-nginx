@@ -42,5 +42,8 @@ RSpec.describe Ruby::Nginx do
   it "successfully builds up a NGINX site" do
     html = `curl -s http://example.test`
     expect(html).to include("Hello, from Ruby NGINX!")
+
+    html = `curl -s https://example.test`
+    expect(html).to include("Hello, from Ruby NGINX!")
   end
 end

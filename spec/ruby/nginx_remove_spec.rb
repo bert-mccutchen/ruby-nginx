@@ -16,8 +16,11 @@ RSpec.describe Ruby::Nginx do
   end
 
   it "successfully tears down a NGINX site" do
+    sleep(1) # Sometimes the system takes a second to lose the DNS host mapping.
     html = `curl -s http://example.test`
-    sleep(1) # Sometimes the DNS takes a second to lose the host mapping.
+    expect(html).to eq("")
+
+    html = `curl -s https://example.test`
     expect(html).to eq("")
   end
 end
