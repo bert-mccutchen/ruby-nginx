@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "terminal_command"
+require_relative "../system/os"
 
 module Ruby
   module Nginx
@@ -10,14 +11,8 @@ module Ruby
           @host = host
           @sudo = sudo
           @sudo_reason = "Allow sudo elevation to remove \"#{host}\" from /etc/hosts?"
-          cmd =
-            if darwin?
-              darwin_command
-            else
-              linux_command
-            end
 
-          super(cmd:, raise: Ruby::Nginx::ConfigError)
+          super(cmd: resolve_command, raise: Ruby::Nginx::ConfigError)
         end
 
         def run
@@ -37,6 +32,14 @@ module Ruby
 
         def linux_command
           sudoify("sed -i '/#{@host}/d' /etc/hosts", @sudo, @sudo_reason)
+        end
+
+        def resolve_command
+          if Ruby::Nginx::System::OS.instance.darwin?
+            darwin_command
+          else
+            linux_command
+          end
         end
       end
     end

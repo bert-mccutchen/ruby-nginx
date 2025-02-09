@@ -2,7 +2,6 @@
 
 require "tty/command"
 require "tty/prompt"
-require_relative "../system/package_manager"
 
 module Ruby
   module Nginx
@@ -29,18 +28,6 @@ module Ruby
 
         def yes?(question)
           ENV["SKIP_PROMPT"] || TTY::Prompt.new.yes?("[Ruby::Nginx] #{question}")
-        end
-
-        def darwin?
-          RbConfig::CONFIG["host_os"] =~ /darwin/
-        end
-
-        def package_manager
-          return :brew if Ruby::Nginx::System::PackageManager.instance.brew?
-          return :apt_get if Ruby::Nginx::System::PackageManager.instance.apt_get?
-          return :yum if Ruby::Nginx::System::PackageManager.instance.yum?
-
-          raise Ruby::Nginx::Error, "Could not determine package manager"
         end
 
         def sudoify(cmd, sudo, reason)

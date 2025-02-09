@@ -25,7 +25,7 @@ The aim of this gem is to be easy to use, while keeping the user in control of t
   - Your NGINX configuration will automatically be updated to include configuration files from `~/.ruby-nginx/servers`. This ensures a clean separation exists between your personal NGINX configuration and Ruby NGINX's automation.
 - Cross-platform and support for multiple package managers.
   - macOS - brew
-  - Linux - apt-get, pacman (soon), yum, zypper (soon)
+  - Linux - apt-get, pacman, yum, zypper
 - Complete configuration - everything is configurable. You can even bring your own NGINX config, and if you'd like, your own :beers:.
 
 > [!WARNING]
@@ -135,7 +135,7 @@ end
 
 To print the help text.
 ```
->ruby-nginx help
+> ruby-nginx help
 Commands:
   ruby-nginx add -d, --domain=DOMAIN -p, --port=N  # Add a NGINX server configuration
   ruby-nginx help [COMMAND]                        # Describe available commands or one specific command

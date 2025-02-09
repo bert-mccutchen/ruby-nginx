@@ -1,23 +1,14 @@
 # frozen_string_literal: true
 
 require_relative "terminal_command"
+require_relative "../system/os"
 
 module Ruby
   module Nginx
     module Commands
       class InstallNginx < TerminalCommand
         def initialize
-          cmd =
-            case package_manager
-            when :brew
-              brew_command
-            when :apt_get
-              apt_get_command
-            when :yum
-              yum_command
-            end
-
-          super(cmd:, raise: Ruby::Nginx::InstallError, printer: :pretty)
+          super(cmd: resolve_command, raise: Ruby::Nginx::InstallError, printer: :pretty)
         end
 
         def run
@@ -36,6 +27,14 @@ module Ruby
           TTY::Command.new(printer: :null).run!("which nginx").success?
         end
 
+        def apt_get_command
+          "sudo apt-get install -y nginx"
+        end
+
+        def pacman_command
+          "sudo pacman -Syu nginx"
+        end
+
         def brew_command
           "brew install nginx"
         end
@@ -44,8 +43,12 @@ module Ruby
           "sudo yum install -y nginx"
         end
 
-        def apt_get_command
-          "sudo apt-get install -y nginx"
+        def zypper_command
+          "sudo zypper install -y nginx"
+        end
+
+        def resolve_command
+          send("#{Ruby::Nginx::System::OS.instance.package_manager}_command")
         end
       end
     end
