@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 
-require "puma"
-require "puma/cli"
 require "ruby/nginx"
 
-ENV["SKIP_PROMPT"] = "true"
+Dir[File.expand_path("support/**/*.rb", __dir__)].each { |file| require file }
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -17,18 +15,18 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 
-  config.add_setting :dummy_dir
-  config.dummy_dir = File.expand_path("./dummy", __dir__)
+  config.add_setting :dummy_path
+  config.dummy_path = File.expand_path("./dummy", __dir__)
 
   config.before(:suite) do
-    print "Starting Dummy Server"
-    $dummy_server = Thread.new do # standard:disable Style/GlobalVars
-      Puma::CLI.new(["-s", "--dir=#{RSpec.configuration.dummy_dir}"]).run
-    end
+    puts "Starting Dummy Server"
+    DummyServer.instance.start
+  rescue
+    DummyServer.instance.stop
   end
 
   config.after(:suite) do
-    print "Stopping Dummy Server"
-    $dummy_server.exit if $dummy_server.alive? # standard:disable Style/GlobalVars
+    puts "Stopping Dummy Server"
+    DummyServer.instance.stop
   end
 end
