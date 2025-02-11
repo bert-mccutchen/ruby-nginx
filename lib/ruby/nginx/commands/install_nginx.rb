@@ -14,10 +14,12 @@ module Ruby
         def run
           return if installed?
 
-          if yes?("Would you like to install Nginx?")
+          puts "\e[0;33m#{cmd}\e[0m"
+
+          if yes?("Would you like to install NGINX?")
             super
           else
-            raise Ruby::Nginx::AbortError, "Nginx is required to continue. Please install Nginx."
+            raise Ruby::Nginx::AbortError, "NGINX is required to continue. Please install NGINX."
           end
         end
 

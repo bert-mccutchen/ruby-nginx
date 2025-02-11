@@ -14,6 +14,8 @@ module Ruby
         def run
           return if installed?
 
+          puts "\e[0;33m#{cmd}\e[0m"
+
           if yes?("Would you like to install mkcert?")
             super
           else

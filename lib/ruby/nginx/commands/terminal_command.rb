@@ -1,12 +1,16 @@
 # frozen_string_literal: true
 
 require "tty/command"
-require "tty/prompt"
+require_relative "helpers/prompt_helper"
+require_relative "helpers/sudo_helper"
 
 module Ruby
   module Nginx
     module Commands
       class TerminalCommand
+        include Ruby::Nginx::Commands::Helpers::PromptHelper
+        include Ruby::Nginx::Commands::Helpers::SudoHelper
+
         attr_reader :cmd, :user, :error_type, :printer, :result
 
         def initialize(cmd:, user: nil, raise: nil, printer: :null)
@@ -22,28 +26,8 @@ module Ruby
           raise @error_type, @result.err if error_type && @result.failure?
 
           @result
-        end
-
-        protected
-
-        def yes?(question)
-          ENV["SKIP_PROMPT"] || TTY::Prompt.new.yes?("[Ruby::Nginx] #{question}")
-        end
-
-        def sudoify(cmd, sudo, reason)
-          return cmd unless sudo
-
-          if sudo_access? || yes?(reason)
-            "sudo #{cmd}"
-          else
-            raise Ruby::Nginx::AbortError, "Operation aborted"
-          end
-        end
-
-        private
-
-        def sudo_access?
-          TerminalCommand.new(cmd: "sudo -n true").run.success?
+        rescue Interrupt
+          raise Ruby::Nginx::AbortError, "Operation aborted"
         end
       end
     end
