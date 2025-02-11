@@ -26,10 +26,9 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "erb"
-  spec.add_dependency "open3"
   spec.add_dependency "thor"
-  spec.add_dependency "tty-command"
-  spec.add_dependency "tty-prompt"
+  spec.add_dependency "tty-command", "~> 0.10", ">= 0.10.1"
+  spec.add_dependency "tty-prompt", "~> 0.23", ">= 0.23.1"
 
   # For more information and examples about making a new gem, checkout our
   # guide at: https://bundler.io/guides/creating_gem.html

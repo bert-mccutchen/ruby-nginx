@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "puma"
 require "puma/configuration"
 
 RSpec.describe Ruby::Nginx do
@@ -14,21 +15,21 @@ RSpec.describe Ruby::Nginx do
   end
 
   it "adds the hosts mapping" do
-    RetryExpectation.new(limit: 30, delay: 1).attempt do
+    retry_expectation(limit: 30, delay: 1) do
       hosts = File.read("/etc/hosts")
       expect(hosts).to include("example.test")
     end
   end
 
   it "creates the NGINX configuration" do
-    RetryExpectation.new(limit: 30, delay: 1).attempt do
+    retry_expectation(limit: 30, delay: 1) do
       path = File.expand_path("~/.ruby-nginx/servers/ruby_nginx_example_test.conf")
       expect(File.exist?(path)).to be_truthy
     end
   end
 
   it "creates the SSL certificate" do
-    RetryExpectation.new(limit: 30, delay: 1).attempt do
+    retry_expectation(limit: 30, delay: 1) do
       path = File.expand_path("~/.ruby-nginx/certs/_example.test.pem")
       expect(File.exist?(path)).to be_truthy
 
@@ -38,7 +39,7 @@ RSpec.describe Ruby::Nginx do
   end
 
   it "creates the log files" do
-    RetryExpectation.new(limit: 30, delay: 1).attempt do
+    retry_expectation(limit: 30, delay: 1) do
       path = File.expand_path("~/.ruby-nginx/logs/example.test.access.log")
       expect(File.exist?(path)).to be_truthy
 
@@ -48,7 +49,7 @@ RSpec.describe Ruby::Nginx do
   end
 
   it "successfully builds up a NGINX site" do
-    RetryExpectation.new(limit: 30, delay: 1).attempt do
+    retry_expectation(limit: 30, delay: 1) do
       html = `curl -s http://example.test`
       expect(html).to include("Hello, from Ruby NGINX!")
 

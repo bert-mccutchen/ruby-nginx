@@ -6,21 +6,21 @@ RSpec.describe Ruby::Nginx do
   end
 
   it "removes the hosts mapping" do
-    RetryExpectation.new(limit: 30, delay: 1).attempt do
+    retry_expectation(limit: 30, delay: 1) do
       hosts = File.read("/etc/hosts")
       expect(hosts).not_to include("example.test")
     end
   end
 
   it "deletes the NGINX configuration" do
-    RetryExpectation.new(limit: 30, delay: 1).attempt do
+    retry_expectation(limit: 30, delay: 1) do
       path = File.expand_path("~/.ruby-nginx/servers/ruby_nginx_example_test.conf")
       expect(File.exist?(path)).to be_falsey
     end
   end
 
   it "successfully tears down a NGINX site" do
-    RetryExpectation.new(limit: 30, delay: 1).attempt do
+    retry_expectation(limit: 30, delay: 1) do
       html = `curl -s http://example.test`
       expect(html).to eq("")
 

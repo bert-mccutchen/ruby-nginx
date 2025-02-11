@@ -1,29 +1,30 @@
-require "puma"
-require "puma/cli"
 require "singleton"
-
-ENV["SKIP_PROMPT"] = "true"
-DUMMY_PATH = File.expand_path("../dummy", __dir__)
 
 class DummyServer
   include Singleton
 
   def initialize
     @semaphore = Mutex.new
-    @server = nil
+    @pid = nil
   end
 
   def start
     @semaphore.synchronize do
-      @server = Thread.new do # standard:disable Style/GlobalVars
-        Puma::CLI.new(["-s", "--dir=#{DUMMY_PATH}"]).run
+      @pid = Process.fork do
+        require "puma"
+        require "puma/cli"
+
+        dummy_path = File.expand_path("../dummy", __dir__)
+
+        Puma::CLI.new(["-s", "--dir=#{dummy_path}"]).run
       end
     end
   end
 
   def stop
     @semaphore.synchronize do
-      @server.exit if @server.alive?
+      Process.kill(:TERM, @pid)
+      Process.wait
     end
   end
 end
