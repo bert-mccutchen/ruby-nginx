@@ -28,7 +28,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "erb"
   spec.add_dependency "thor"
   spec.add_dependency "tty-command", "~> 0.10", ">= 0.10.1"
-  spec.add_dependency "tty-prompt", "~> 0.23", ">= 0.23.1"
+  spec.add_dependency "tty-prompt", ">= 0.3.0"
 
   # For more information and examples about making a new gem, checkout our
   # guide at: https://bundler.io/guides/creating_gem.html

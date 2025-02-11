@@ -1,11 +1,11 @@
 PATH
   remote: .
   specs:
-    ruby-nginx (1.0.0.pre.beta.1)
+    ruby-nginx (1.0.0.pre.beta.2)
       erb
       thor
       tty-command (~> 0.10, >= 0.10.1)
-      tty-prompt (~> 0.23, >= 0.23.1)
+      tty-prompt (>= 0.3.0)
 
 GEM
   remote: https://rubygems.org/
