@@ -156,6 +156,7 @@ Options:
   -r,          [--root-path=ROOT_PATH]                                # default: $PWD
   -s,          [--ssl], [--no-ssl], [--skip-ssl]                      # default: false
   -l,          [--log], [--no-log], [--skip-log]                      # default: false
+  -t,          [--template-path=TEMPLATE_PATH]                        # default: [GEM_PATH]/nginx/templates/nginx.conf
   -cert-file,  [--ssl-certificate-path=SSL_CERTIFICATE_PATH]          # default: ~/.ruby-nginx/certs/_[DOMAIN].pem
   -key-file,   [--ssl-certificate-key-path=SSL_CERTIFICATE_KEY_PATH]  # default: ~/.ruby-nginx/certs/_[DOMAIN]-key.pem
   -access-log, [--access-log-path=ACCESS_LOG_PATH]                    # default: ~/.ruby-nginx/logs/[DOMAIN].access.log

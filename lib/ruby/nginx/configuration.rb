@@ -36,7 +36,7 @@ module Ruby
         create_ssl_certs! if options[:ssl]
         create_log_files! if options[:log]
 
-        ERB.new(File.read(options[:template_path])).result(binding)
+        ERB.new(load_template).result(binding)
       end
 
       def defaults
@@ -80,6 +80,16 @@ module Ruby
 
       def apply_dynamic_defaults!
         self.options = default_paths.merge(options)
+      end
+
+      def load_template
+        File.read(options[:template_path])
+      rescue Errno::EISDIR
+        raise Ruby::Nginx::AbortError, "Template is a directory: #{options[:template_path]}"
+      rescue Errno::ENOENT
+        raise Ruby::Nginx::AbortError, "Template does not exist at: #{options[:template_path]}"
+      rescue => e
+        raise Ruby::Nginx::AbortError, "Failed to read template.", cause: e
       end
 
       def create_ssl_certs!

@@ -25,6 +25,7 @@ module Ruby
       method_option :root_path, aliases: "-r", type: :string, desc: "default: $PWD"
       method_option :ssl, aliases: "-s", type: :boolean, desc: defaults(:ssl)
       method_option :log, aliases: "-l", type: :boolean, desc: defaults(:log)
+      method_option :template_path, aliases: "-t", type: :string, desc: "default: [GEM_PATH]/nginx/templates/nginx.conf"
       method_option :ssl_certificate_path, aliases: "-cert-file", type: :string, desc: default_paths(:ssl_certificate_path)
       method_option :ssl_certificate_key_path, aliases: "-key-file", type: :string, desc: default_paths(:ssl_certificate_key_path)
       method_option :access_log_path, aliases: "-access-log", type: :string, desc: default_paths(:access_log_path)
@@ -35,6 +36,7 @@ module Ruby
           port: options.port,
           host: options.host,
           root_path: options.root_path,
+          template_path: options.template_path,
           ssl: options.ssl,
           log: options.log,
           ssl_certificate_path: options.ssl_certificate_path,

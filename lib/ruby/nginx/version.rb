@@ -2,7 +2,7 @@
 
 module Ruby
   module Nginx
-    VERSION = "1.0.0-beta.3"
+    VERSION = "1.0.0-beta.4"
 
     Version = Gem::Version
   end
