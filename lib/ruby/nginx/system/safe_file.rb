@@ -7,6 +7,14 @@ module Ruby
     module System
       class SafeFile
         class << self
+          def mkdir(dir_path)
+            safe_path = File.expand_path(dir_path)
+
+            FileUtils.mkdir_p(dir_path)
+
+            safe_path
+          end
+
           def touch(file_path)
             safe_path = File.expand_path(file_path)
 

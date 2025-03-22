@@ -28,6 +28,13 @@ RSpec.describe Ruby::Nginx do
     end
   end
 
+  it "creates the NGINX temp path" do
+    retry_expectation(limit: 30, delay: 1) do
+      path = File.expand_path("~/.ruby-nginx/tmp")
+      expect(Dir.exist?(path)).to be_truthy
+    end
+  end
+
   it "creates the SSL certificate" do
     retry_expectation(limit: 30, delay: 1) do
       path = File.expand_path("~/.ruby-nginx/certs/_example.test.pem")

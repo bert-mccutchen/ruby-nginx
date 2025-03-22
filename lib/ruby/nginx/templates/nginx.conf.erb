@@ -54,6 +54,9 @@ server {
   error_log                   <%= options[:error_log_path] %> warn;
   <% end %>
 
+  # Do not use the default proxy_temp_path, this is to avoid directory permissions issues.
+  proxy_temp_path <%= options[:temp_path] %> 1 2;
+
   # reverse proxy
   location @<%= name %> {
     proxy_pass                         http://<%= name %>;

@@ -5,6 +5,7 @@ source "https://rubygems.org"
 # Specify your gem's dependencies in ruby-nginx.gemspec
 gemspec
 
+gem "debug"
 gem "puma"
 gem "rack"
 gem "rake"

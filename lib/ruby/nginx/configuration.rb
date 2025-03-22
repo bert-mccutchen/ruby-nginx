@@ -33,6 +33,7 @@ module Ruby
         validate!
         apply_dynamic_defaults!
 
+        create_temp_path!
         create_ssl_certs! if options[:ssl]
         create_log_files! if options[:log]
 
@@ -51,6 +52,7 @@ module Ruby
 
       def default_paths
         {
+          temp_path: default_path("tmp"),
           ssl_certificate_path: default_path("certs/_#{options[:domain]}.pem"),
           ssl_certificate_key_path: default_path("certs/_#{options[:domain]}-key.pem"),
           access_log_path: default_path("logs/#{options[:domain]}.access.log"),
@@ -90,6 +92,10 @@ module Ruby
         raise Ruby::Nginx::AbortError, "Template does not exist at: #{options[:template_path]}"
       rescue => e
         raise Ruby::Nginx::AbortError, "Failed to read template.", cause: e
+      end
+
+      def create_temp_path!
+        options[:temp_path] = System::SafeFile.mkdir(options[:temp_path])
       end
 
       def create_ssl_certs!
