@@ -11,18 +11,34 @@ module Ruby
           @ip = ip
           @sudo = sudo
           sudo_reason = "Allow sudo elevation to add \"#{host}\" to /etc/hosts?"
-          cmd = "echo \"#{ip} #{host}\" | #{sudoify("tee -a /etc/hosts", sudo, sudo_reason)}"
 
-          super(cmd:, raise: Ruby::Nginx::ConfigError)
+          super(
+            cmd: "echo \"#{host_config}\" | #{sudoify("tee -a /etc/hosts", sudo, sudo_reason)}",
+            raise: Ruby::Nginx::ConfigError
+          )
         end
 
         def run
-          super
+          super unless added?
         rescue Ruby::Nginx::ConfigError
           raise if @sudo
 
           # Elevate to sudo and try again.
           self.class.new(@host, @ip, sudo: true).run
+        end
+
+        private
+
+        def added?
+          hosts.include?(host_config)
+        end
+
+        def hosts
+          @hosts ||= Ruby::Nginx::System::SafeFile.read("/etc/hosts")
+        end
+
+        def host_config
+          "#{@ip} #{@host}"
         end
       end
     end

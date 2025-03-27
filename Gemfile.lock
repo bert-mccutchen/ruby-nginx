@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ruby-nginx (1.0.0)
+    ruby-nginx (1.0.1)
       erb
       thor
       tty-command (~> 0.10, >= 0.10.1)

@@ -9,9 +9,8 @@ module Ruby
         def initialize(sudo: false)
           @sudo = sudo
           sudo_reason = "Allow sudo elevation to start NGINX?"
-          cmd = sudoify("nginx", sudo, sudo_reason)
 
-          super(cmd:, raise: Ruby::Nginx::StartError)
+          super(cmd: sudoify("nginx", sudo, sudo_reason), raise: Ruby::Nginx::StartError)
         end
 
         def run
