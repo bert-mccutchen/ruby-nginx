@@ -9,8 +9,25 @@ module Ruby
       class RemoveNginxConfig
         include Ruby::Nginx::Constants
 
-        def run(name)
-          Ruby::Nginx::System::SafeFile.rm("#{SERVERS_PATH}/#{name}.conf")
+        def initialize(name)
+          @name = name
+        end
+
+        def run
+          return false unless exists?
+
+          Ruby::Nginx::System::SafeFile.rm(config_path)
+          true
+        end
+
+        private
+
+        def exists?
+          Ruby::Nginx::System::SafeFile.exist?(config_path)
+        end
+
+        def config_path
+          @config_path ||= "#{SERVERS_PATH}/#{@name}.conf"
         end
       end
     end

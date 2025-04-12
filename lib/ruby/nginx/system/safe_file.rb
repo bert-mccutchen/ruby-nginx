@@ -10,9 +10,13 @@ module Ruby
           def mkdir(dir_path)
             safe_path = File.expand_path(dir_path)
 
-            FileUtils.mkdir_p(dir_path)
+            FileUtils.mkdir_p(safe_path)
 
             safe_path
+          end
+
+          def exist?(file_path)
+            File.exist?(File.expand_path(file_path))
           end
 
           def touch(file_path)
@@ -25,9 +29,7 @@ module Ruby
           end
 
           def read(file_path)
-            safe_path = File.expand_path(file_path)
-
-            File.read(safe_path)
+            File.read(File.expand_path(file_path))
           end
 
           def write(file_path, content)
@@ -39,9 +41,7 @@ module Ruby
           end
 
           def rm(file_path)
-            safe_path = File.expand_path(file_path)
-
-            FileUtils.rm_f(safe_path)
+            FileUtils.rm_f(File.expand_path(file_path))
           end
         end
       end

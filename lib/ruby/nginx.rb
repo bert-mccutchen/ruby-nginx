@@ -14,9 +14,11 @@ module Ruby
       setup!
       conf = config(options, &block)
 
-      System::Nginx.add_server_config(conf.name, conf.generate!)
-      System::Nginx.validate_config!
-      System::Nginx.restart!
+      if System::Nginx.add_server_config(conf.name, conf.generate!)
+        System::Nginx.validate_config!
+        System::Nginx.restart!
+      end
+
       System::Hosts.add(conf.domain, conf.host)
 
       conf
@@ -30,8 +32,7 @@ module Ruby
     def self.remove!(options = {}, &block)
       conf = config(options, &block)
 
-      System::Nginx.remove_server_config(conf.name)
-      System::Nginx.restart!
+      System::Nginx.restart! if System::Nginx.remove_server_config(conf.name)
       System::Hosts.remove(conf.domain)
 
       conf

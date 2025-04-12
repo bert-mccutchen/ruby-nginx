@@ -32,11 +32,11 @@ module Ruby
           end
 
           def add_server_config(name, config)
-            Commands::AddNginxConfig.new.run(name, config)
+            Commands::AddNginxConfig.new(name, config).run
           end
 
           def remove_server_config(name)
-            Commands::RemoveNginxConfig.new.run(name)
+            Commands::RemoveNginxConfig.new(name).run
           end
 
           def validate_config!
