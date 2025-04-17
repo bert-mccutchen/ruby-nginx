@@ -56,6 +56,7 @@ server {
 
   # Do not use the default proxy_temp_path, this is to avoid directory permissions issues.
   proxy_temp_path <%= options[:temp_path] %> 1 2;
+  client_body_temp_path <%= options[:temp_path] %> 1 2;
 
   # reverse proxy
   location @<%= name %> {
