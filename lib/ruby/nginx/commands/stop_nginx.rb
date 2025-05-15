@@ -16,13 +16,22 @@ module Ruby
         def run
           super
         rescue Ruby::Nginx::StopError => e
+          return if nginx_not_running_error?(e)
+
           if @sudo
-            # Nginx is not running - ignore.
-            raise unless e.message.include?("invalid PID number")
+            raise
           else
             # Elevate to sudo and try again.
             self.class.new(sudo: true).run
           end
+        end
+
+        private
+
+        def nginx_not_running_error?(error)
+          error.message.include?("invalid PID number") ||
+            error.message.include?("No such process") ||
+            error.message.include?("No such file or directory")
         end
       end
     end
